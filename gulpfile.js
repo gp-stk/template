@@ -4,51 +4,45 @@
 var gulp = require('gulp');
 
 // プラグインの読み込み
-var browserSync = require('browser-sync');
 var sass = require('gulp-sass');
+var plumber = require('gulp-plumber');
+var sourcemaps = require('gulp-sourcemaps');
+var browserSync = require('browser-sync');
 
-//ブラウザ同期タスク
-gulp.task('default', ['browser-sync']);
-
-gulp.task('browser-sync', function() {
-	browserSync({
-		server: {
-			 baseDir: "html/"　//対象ディレクトリ
-			 //,index  : "index.html"　//インデックスファイル
-		}
-	});
-});
-
-//ブラウザリロード
-gulp.task('bs-reload', function () {
-	browserSync.reload();
-});
-
-//Sass自動コンパイルタスク
-gulp.task('sass', function () {
-	// scssファイルを取得
-	gulp.src('./html/src/scss/style.scss')
-	// コンパイル実行
+// sass自動コンパイルタスク
+gulp.task('sass', function(){
+	gulp.src('./src/scss/**.scss')
+	.pipe(plumber())
+	.pipe(sourcemaps.init())
 	.pipe(sass({
 		outputStyle: 'expanded'
-	})
+	}))
 	// Sassのコンパイルエラーを表示
 	// (これがないと自動的に止まってしまう)
-	.on('error', sass.logError))
-	// cssフォルダー以下に保存
-	.pipe(gulp.dest('./html/dist/css'));
+	//.on('error', sass.logError)
+	.pipe(sourcemaps.write('./'))
+	.pipe(gulp.dest('./html/common/css'));
 });
 
-
-//監視ファイル
-gulp.task('default', ['browser-sync','sass'], function () {
-	// 監視するファイルと、実行タスク名を指定
-	gulp.watch("./html/*.html", ['bs-reload']);
-	gulp.watch("./html/src/**/*.scss", ['sass']);
-	//gulp.watch("./html/src/**/*.scss", ['bs-reload']);
-	//gulp.watch("./html/dist/**/*.css", ['bs-reload']);
-	gulp.watch("./html/dist/**/*.css").on('change', browserSync.reload);
-	//gulp.watch("./html/*/*.scss", ['bs-reload']);
-	//gulp.watch("./html/**/*.css", ['bs-reload']);
-	//gulp.watch("*.js", ['bs-reload']);
+// ブラウザ同期タスク
+gulp.task('browser-sync', function() {
+    browserSync({
+        server: {
+			 //baseDir: "html"
+			 baseDir: ["html", "src"] //対象ディレクトリ
+            //,index  : "index.html" //インデックスファイル
+        }
+    });
 });
+gulp.task('bs-reload', function () {
+    browserSync.reload();
+});
+
+// watchタスク(html,js,sassファイル変更時に実行するタスク)
+gulp.task('sass-watch', ['sass','browser-sync'], function(){
+	gulp.watch("./src/**/*.scss", ['sass']);
+	gulp.watch("./html/*.html",['bs-reload']);
+	gulp.watch("./src/**/*.scss",['bs-reload']);
+});
+
+gulp.task('default', ['sass-watch','browser-sync']);
