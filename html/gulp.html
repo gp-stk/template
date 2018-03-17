@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<link rel="stylesheet" href="common/css/style.css">
+</head>
+<body>
+	<section>
+		<h2>package.jsonを作成</h2>
+		<code>npm init -y</code>
+	</section>
+	<section>
+		<h2>gulpをインストール</h2>
+		<code>npm install -D gulp --save-dev</code>
+	</section>
+	<section>
+		<h2>必要なパッケージをインストール</h2>
+		<code>npm install -D gulp-sass --save-dev</code>
+		<p>--save-devを付けるとpackage.jsonにインストールしたパッケージを記述してくれます。</p>
+		<ul>
+			<li><b>gulp-sass</b>（scssをcssに変換するパッケージ）</li>
+			<li><b>browser-sync</b></li>
+			<li><b>gulp-sourcemaps</b></li>
+			<li><b>gulp-clean-css</b></li>
+			<li><b>gulp-uglify</b></li>
+		</ul>
+	</section>
+	<section>
+		<h2>パッケージをアンインストール</h2>
+		<code>npm rm [パッケージ]</code>
+	</section>
+	<section>
+		<h2>タスクの実行</h2>
+		<code>npx gulp</code>
+		<code>npx gulp [タスク名]</code>
+	</section>
+	<section>
+		<h2>タスクの終了</h2>
+		<code>Ctrl + c</code>
+	</section>
+
+</body>
+</html>
